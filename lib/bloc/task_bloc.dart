@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import '../model/task.dart';
-import 'bloc_exports.dart';
 
 part 'task_event.dart';
 part 'task_state.dart';
@@ -23,11 +23,12 @@ class TasksBloc extends HydratedBloc<TasksEvent, TasksState> {
 
   void _onUpdateTask(UpdateTask event, Emitter<TasksState> emit) {
     final state = this.state;
-    final task = event.task;
-    final int index = state.allTasks.indexOf(task);
+    final updatedTask = event.task;
 
-    List<Task> updatedTasks = List.from(state.allTasks);
-    updatedTasks[index] = task.copyWith(isDone: !task.isDone!);
+    // Create a new list of tasks with the updated task
+    final updatedTasks = state.allTasks.map((task) {
+      return task.id == updatedTask.id ? updatedTask : task;
+    }).toList();
 
     emit(TasksState(
       allTasks: updatedTasks,

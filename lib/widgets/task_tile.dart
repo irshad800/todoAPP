@@ -4,19 +4,25 @@ import 'package:todoapp/utils/colors.dart';
 
 import '../bloc/task_bloc.dart';
 import '../model/task.dart';
+import '../screens/edit_task.dart';
 
 class TaskTile extends StatelessWidget {
   final Task task;
   final Function(Task) onTaskToggle;
+  final Function(Task)? onEditTask;
+
+  const TaskTile({
+    Key? key,
+    required this.task,
+    required this.onTaskToggle,
+    this.onEditTask,
+  }) : super(key: key);
 
   void _removeOrDeleteTask(BuildContext context, Task task) {
     task.isDeleted!
         ? context.read<TasksBloc>().add(DeleteTask(task: task))
         : context.read<TasksBloc>().add(RemoveTask(task: task));
   }
-
-  const TaskTile({Key? key, required this.task, required this.onTaskToggle})
-      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +47,31 @@ class TaskTile extends StatelessWidget {
           style: TextStyle(color: Colors.grey),
         ),
         subtitle: Text(task.details),
-        trailing: Checkbox(
-          value: task.isDone,
-          onChanged: (value) {
-            onTaskToggle(task);
+        trailing: PopupMenuButton<String>(
+          onSelected: (value) {
+            if (value == 'edit') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditTaskScreen(
+                    oldTask: task,
+                  ),
+                ),
+              );
+            } else if (value == 'delete') {
+              _removeOrDeleteTask(context, task);
+            }
           },
+          itemBuilder: (context) => [
+            PopupMenuItem<String>(
+              value: 'edit',
+              child: Text('Edit'),
+            ),
+            PopupMenuItem<String>(
+              value: 'delete',
+              child: Text('Delete'),
+            ),
+          ],
         ),
         onLongPress: () => _removeOrDeleteTask(context, task),
       ),
