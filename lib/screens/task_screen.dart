@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/screens/drawer.dart';
 import 'package:todoapp/utils/colors.dart';
 
 import '../bloc/bloc_exports.dart';
@@ -8,6 +9,7 @@ import 'add_task_screen.dart';
 
 class TaskScreen extends StatelessWidget {
   TaskScreen({Key? key}) : super(key: key);
+  static const id = "task_screen";
   TextEditingController titleController = TextEditingController();
   void _addTask(BuildContext context) {
     showModalBottomSheet(
@@ -31,31 +33,42 @@ class TaskScreen extends StatelessWidget {
               children: [
                 const Text(
                   'Task List',
-                  style: TextStyle(fontFamily: "Airbnb", color: Colors.black),
+                  style: TextStyle(fontFamily: "Airbnb", color: Colors.white60),
                 ),
                 SizedBox(
-                  width: 166,
+                  width: 112,
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () => _addTask(context),
                   child: const Icon(
                     Icons.add,
-                    color: Colors.black,
+                    color: Colors.white60,
                   ),
                 ),
               ],
             ),
           ),
+          drawer: MyDrawer(),
           body: Column(
             children: [
+              SizedBox(
+                height: 5,
+              ),
               Center(
-                child: Text(
-                  "Tasks",
+                  child: Chip(
+                label: Text(
+                  "${state.allTasks.length} Tasks",
                   style: TextStyle(
-                      fontFamily: "Airbnb",
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                    fontFamily: "Airbnb",
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
                 ),
+                backgroundColor: Colors.grey[400],
+                labelStyle: TextStyle(color: Colors.black),
+              )),
+              SizedBox(
+                height: 10,
               ),
               TaskLists(
                 taskList: tasksLists,

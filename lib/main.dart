@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:todoapp/screens/task_screen.dart';
+import 'package:todoapp/services/app_router.dart';
 
 import 'bloc/bloc_exports.dart';
 
@@ -12,13 +13,16 @@ void main() async {
   );
 
   HydratedBlocOverrides.runZoned(
-    () => runApp(const MyApp()),
+    () => runApp(MyApp(
+      appRouter: AppRouter(),
+    )),
     storage: storage,
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.appRouter});
+  final AppRouter appRouter;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +30,7 @@ class MyApp extends StatelessWidget {
       create: (context) => TasksBloc(),
       child: MaterialApp(
         home: TaskScreen(),
+        onGenerateRoute: appRouter.onGenerateRoute,
       ),
     );
   }

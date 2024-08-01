@@ -5,13 +5,28 @@ import '../bloc/task_bloc.dart';
 import '../model/task.dart';
 import '../services/gen_id.dart';
 
-class AddTaskScreen extends StatelessWidget {
-  const AddTaskScreen({
-    super.key,
-    required this.titleController,
-  });
+class AddTaskScreen extends StatefulWidget {
+  const AddTaskScreen(
+      {super.key, required TextEditingController titleController});
 
-  final TextEditingController titleController;
+  @override
+  _AddTaskScreenState createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
+  late TextEditingController titleController;
+
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +72,7 @@ class AddTaskScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                     style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                        ElevatedButton.styleFrom(backgroundColor: Colors.black),
                     onPressed: () {
                       var task = Task(
                         id: IdGenerator.generateId(),
