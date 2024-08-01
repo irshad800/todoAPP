@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/task_bloc.dart';
 import '../model/task.dart';
+import '../services/gen_id.dart';
 
 class AddTaskScreen extends StatelessWidget {
   const AddTaskScreen({
@@ -22,16 +23,12 @@ class AddTaskScreen extends StatelessWidget {
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Column(
             children: [
-              const SizedBox(
-                height: 5,
-              ),
+              const SizedBox(height: 5),
               Text(
                 "Add Task",
                 style: TextStyle(fontFamily: "Airbnb", color: Colors.white),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               TextField(
                 controller: titleController,
                 style: TextStyle(color: Colors.white),
@@ -47,30 +44,33 @@ class AddTaskScreen extends StatelessWidget {
                   hintStyle: TextStyle(color: Colors.white54),
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        "cancel",
-                        style: TextStyle(color: Colors.white),
-                      )),
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                   ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey),
-                      onPressed: () {
-                        var task = Task(title: titleController.text, id: '');
-                        context.read<TasksBloc>().add(AddTask(task: task));
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        "Add",
-                        style: TextStyle(color: Colors.white),
-                      ))
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                    onPressed: () {
+                      var task = Task(
+                        id: IdGenerator.generateId(),
+                        title: titleController.text,
+                      );
+                      context.read<TasksBloc>().add(AddTask(task: task));
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "Add",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ],
               ),
             ],
