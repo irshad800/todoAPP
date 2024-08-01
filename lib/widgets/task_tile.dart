@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/task_bloc.dart';
 import '../model/task.dart';
 import '../screens/edit_task.dart';
-import '../services/notification_service.dart'; // Import NotificationService
 
 class TaskTile extends StatelessWidget {
   final Task task;
@@ -24,54 +23,28 @@ class TaskTile extends StatelessWidget {
         : context.read<TasksBloc>().add(RemoveTask(task: task));
   }
 
-  void _notifyCompletion(BuildContext context) {
-    final notificationService = InheritedNotificationService.of(context);
-    notificationService.showNotification('Task Completed',
-        'The task "${task.title}" has been marked as completed.');
-  }
-
-  Color _getBackgroundColor() {
-    if (task.isPinned) {
-      return Colors.blue.withOpacity(0.1);
-    } else if (task.isDone!) {
-      return Colors.green.withOpacity(0.1);
-    } else {
-      return Colors.grey.withOpacity(0.1);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: _getBackgroundColor(),
+        color: Colors.white.withOpacity(0.1),
       ),
       child: ListTile(
-        leading: Checkbox(
-          value: task.isDone,
-          onChanged: (bool? value) {
-            final updatedTask = task.copyWith(isDone: value);
-            onTaskToggle(updatedTask);
-            if (value == true) {
-              _notifyCompletion(context); // Notify when the task is completed
-            }
-          },
-        ),
         title: Text(
           task.title,
           style: TextStyle(
-            color: Colors.black,
             decoration: task.isDone! ? TextDecoration.lineThrough : null,
           ),
         ),
-        subtitle: Text(
+        leading: Text(
           task.dueDate != null
               ? '${task.dueDate!.toLocal()}'.split(' ')[0]
               : 'No Date',
           style: TextStyle(color: Colors.grey),
         ),
+        subtitle: Text(task.details),
         trailing: PopupMenuButton<String>(
           onSelected: (value) {
             if (value == 'edit') {
