@@ -5,20 +5,19 @@ class Task extends Equatable {
   final String title;
   final String details;
   final DateTime? dueDate;
-  bool? isDone;
-  bool? isDeleted;
+  final bool isDone;
+  final bool isDeleted;
+  final bool isPinned;
 
   Task({
     required this.id,
     required this.title,
-    this.details = "",
+    required this.details,
     this.dueDate,
-    this.isDone,
-    this.isDeleted,
-  }) {
-    isDone = isDone ?? false;
-    isDeleted = isDeleted ?? false;
-  }
+    this.isDone = false,
+    this.isDeleted = false,
+    this.isPinned = false,
+  });
 
   Task copyWith({
     String? id,
@@ -27,6 +26,7 @@ class Task extends Equatable {
     DateTime? dueDate,
     bool? isDone,
     bool? isDeleted,
+    bool? isPinned,
   }) {
     return Task(
       id: id ?? this.id,
@@ -35,8 +35,13 @@ class Task extends Equatable {
       dueDate: dueDate ?? this.dueDate,
       isDone: isDone ?? this.isDone,
       isDeleted: isDeleted ?? this.isDeleted,
+      isPinned: isPinned ?? this.isPinned,
     );
   }
+
+  @override
+  List<Object?> get props =>
+      [id, title, details, dueDate, isDone, isDeleted, isPinned];
 
   Map<String, dynamic> toMap() {
     return {
@@ -46,22 +51,19 @@ class Task extends Equatable {
       'dueDate': dueDate?.toIso8601String(),
       'isDone': isDone,
       'isDeleted': isDeleted,
+      'isPinned': isPinned,
     };
   }
 
   factory Task.fromMap(Map<String, dynamic> map) {
     return Task(
-      id: map['id'] ?? "",
-      title: map['title'] ?? "",
-      details: map['details'] ?? "",
-      dueDate: map['dueDate'] != null
-          ? DateTime.parse(map['dueDate'])
-          : null, // Parse DateTime
+      id: map['id'],
+      title: map['title'],
+      details: map['details'],
+      dueDate: map['dueDate'] != null ? DateTime.parse(map['dueDate']) : null,
       isDone: map['isDone'],
       isDeleted: map['isDeleted'],
+      isPinned: map['isPinned'],
     );
   }
-
-  @override
-  List<Object?> get props => [id, title, details, dueDate, isDone, isDeleted];
 }

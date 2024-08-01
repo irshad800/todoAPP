@@ -5,26 +5,38 @@ class TasksState extends Equatable {
   final List<Task> removedTasks;
 
   const TasksState({
-    this.allTasks = const <Task>[],
-    this.removedTasks = const <Task>[],
+    this.allTasks = const [],
+    this.removedTasks = const [],
   });
+
+  TasksState copyWith({
+    List<Task>? allTasks,
+    List<Task>? removedTasks,
+  }) {
+    return TasksState(
+      allTasks: allTasks ?? this.allTasks,
+      removedTasks: removedTasks ?? this.removedTasks,
+    );
+  }
 
   @override
   List<Object> get props => [allTasks, removedTasks];
 
-  Map<String, dynamic> toMap() {
-    return {
-      'allTasks': allTasks.map((x) => x.toMap()).toList(),
-      'removedTasks': removedTasks.map((x) => x.toMap()).toList(),
-    };
-  }
-
   factory TasksState.fromMap(Map<String, dynamic> map) {
     return TasksState(
-      allTasks:
-          List<Task>.from((map['allTasks']?.map((x) => Task.fromMap(x))) ?? []),
-      removedTasks: List<Task>.from(
-          (map['removedTasks']?.map((x) => Task.fromMap(x))) ?? []),
+      allTasks: (map['allTasks'] as List<dynamic>)
+          .map((item) => Task.fromMap(item as Map<String, dynamic>))
+          .toList(),
+      removedTasks: (map['removedTasks'] as List<dynamic>)
+          .map((item) => Task.fromMap(item as Map<String, dynamic>))
+          .toList(),
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'allTasks': allTasks.map((task) => task.toMap()).toList(),
+      'removedTasks': removedTasks.map((task) => task.toMap()).toList(),
+    };
   }
 }

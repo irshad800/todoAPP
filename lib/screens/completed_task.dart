@@ -53,7 +53,6 @@ class CompletedScreen extends StatelessWidget {
                     return TaskTile(
                       task: task,
                       onTaskToggle: (task) {
-                        // Update the task status in the Bloc
                         context.read<TasksBloc>().add(UpdateTask(task: task));
                       },
                     );
