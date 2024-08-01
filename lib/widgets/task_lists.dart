@@ -18,7 +18,10 @@ class TaskLists extends StatelessWidget {
         itemCount: taskList.length,
         itemBuilder: (context, index) {
           var task = taskList[index];
-          return TaskTile(task: task);
+          return TaskTile(
+            task: task,
+            onTaskToggle: (Task) {},
+          );
         },
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/screens/recycle_bin.dart';
-import 'package:todoapp/screens/task_screen.dart';
+import 'package:todoapp/screens/tabs_screen.dart';
 
 import '../bloc/bloc_exports.dart';
 import '../utils/colors.dart';
@@ -29,15 +29,16 @@ class MyDrawer extends StatelessWidget {
           ),
           BlocBuilder<TasksBloc, TasksState>(
             builder: (context, state) {
+              final taskCount = state.allTasks.length;
               return GestureDetector(
-                onTap: () => Navigator.of(context).pushNamed(TaskScreen.id),
+                onTap: () => Navigator.of(context).pushNamed(TabScreen.id),
                 child: ListTile(
                   leading: Icon(
                     Icons.folder_special,
                     color: primaryColors,
                   ),
                   title: Text('My Tasks'),
-                  trailing: Text("${state.allTasks.length}"),
+                  trailing: Text("$taskCount"),
                 ),
               );
             },
@@ -45,6 +46,7 @@ class MyDrawer extends StatelessWidget {
           Divider(),
           BlocBuilder<TasksBloc, TasksState>(
             builder: (context, state) {
+              final removedTaskCount = state.removedTasks.length;
               return GestureDetector(
                 onTap: () => Navigator.of(context).pushNamed(RecycleBin.id),
                 child: ListTile(
@@ -53,7 +55,7 @@ class MyDrawer extends StatelessWidget {
                     color: primaryColors,
                   ),
                   title: Text('Bin'),
-                  trailing: Text("${state.removedTasks.length}"),
+                  trailing: Text("$removedTaskCount"),
                 ),
               );
             },

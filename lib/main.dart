@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:todoapp/screens/task_screen.dart';
+import 'package:todoapp/screens/tabs_screen.dart';
 import 'package:todoapp/services/app_router.dart';
 
 import 'bloc/bloc_exports.dart';
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => TasksBloc(),
       child: MaterialApp(
-        home: TaskScreen(),
+        home: TabScreen(),
         onGenerateRoute: appRouter.onGenerateRoute,
       ),
     );
