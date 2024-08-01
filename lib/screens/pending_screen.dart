@@ -11,6 +11,8 @@ class PendingScreen extends StatelessWidget {
   PendingScreen({Key? key}) : super(key: key);
   static const id = "task_screen";
   final TextEditingController titleController = TextEditingController();
+  final TextEditingController detailController = TextEditingController();
+
   void _addTask(BuildContext context) {
     showModalBottomSheet(
       backgroundColor: primaryColors,
@@ -18,6 +20,7 @@ class PendingScreen extends StatelessWidget {
       builder: (context) => SingleChildScrollView(
         child: AddTaskScreen(
           titleController: titleController,
+          detailController: detailController,
         ),
       ),
     );

@@ -14,6 +14,8 @@ class TabScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController titleController = TextEditingController();
+    final TextEditingController detailController = TextEditingController();
+
     final PageController pageController = PageController();
 
     void _addTask(BuildContext context) {
@@ -23,6 +25,7 @@ class TabScreen extends StatelessWidget {
         builder: (context) => SingleChildScrollView(
           child: AddTaskScreen(
             titleController: titleController,
+            detailController: detailController,
           ),
         ),
       );
