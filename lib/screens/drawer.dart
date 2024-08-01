@@ -43,16 +43,20 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           Divider(),
-          GestureDetector(
-            onTap: () => Navigator.of(context).pushNamed(RecycleBin.id),
-            child: ListTile(
-              leading: Icon(
-                Icons.delete,
-                color: primaryColors,
-              ),
-              title: Text('Bin'),
-              trailing: Text("0"),
-            ),
+          BlocBuilder<TasksBloc, TasksState>(
+            builder: (context, state) {
+              return GestureDetector(
+                onTap: () => Navigator.of(context).pushNamed(RecycleBin.id),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.delete,
+                    color: primaryColors,
+                  ),
+                  title: Text('Bin'),
+                  trailing: Text("${state.removedTasks.length}"),
+                ),
+              );
+            },
           ),
         ],
       ),
