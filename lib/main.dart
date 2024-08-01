@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:todoapp/screens/task_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'bloc/bloc_exports.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
+
+  HydratedBlocOverrides.runZoned(
+    () => runApp(const MyApp()),
+    storage: storage,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -10,12 +22,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: TaskScreen());
+    return BlocProvider(
+      create: (context) => TasksBloc(),
+      child: MaterialApp(
+        home: TaskScreen(),
+      ),
+    );
   }
 }
